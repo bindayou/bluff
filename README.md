@@ -2,11 +2,15 @@
 
 Based on the latest python3.6, the smallest and flexible Python asynchronous crawler library.
 
+![bluff_process](https://github.com/BlingBlingdevelopers/bluff/blob/master/static/bluff_process.png)
 
 - [DevelopmentPlan](#DevelopmentPlan)
     - [v0.1](#v0.1edition)
       - [new_module](#v0.1new_module)
       - [change_module](#v0.1change_module)
+- [Example](#Example)
+- [Contribution](#Contribution)
+
 # DevelopmentPlan
 
 ## v0.1edition
@@ -25,3 +29,13 @@ Based on the latest python3.6, the smallest and flexible Python asynchronous cra
 ### v0.1change_module
 
 Not available
+
+# Example
+
+The examples are in the /example/ directory, Including common tests and pytest tests 
+
+# Contribution
+- Pull request.
+- Open issue.
+
+### Welcome to rebuild this immaturity！！！ 
