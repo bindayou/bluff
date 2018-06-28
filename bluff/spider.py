@@ -9,22 +9,20 @@
                    6/28/18:
 -------------------------------------------------
 """
-
+# Python standard library module
 import asyncio
 import re
 from datetime import datetime
-
+# Python third party module
 import aiohttp
-from .request import fetch
-
-from .log import logger
-
 try:
     import uvloop
-
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 except ImportError:
     pass
+# Application custom module
+from .request import fetch
+from .log import logger
 
 
 class Spider:
@@ -34,7 +32,7 @@ class Spider:
     error_urls = []
     urls_count = 0
     concurrency = 5
-    interval = None #Todo: Limit the interval between two requests
+    interval = None  # Todo: Limit the interval between two requests
     headers = {}
     proxy = None
     cookie_jar = None
@@ -59,11 +57,14 @@ class Spider:
         loop = asyncio.get_event_loop()
 
         if cls.base_url is None:
-            cls.base_url = re.match('(http|https)://[\w\-_]+(\.[\w\-_]+)+/', cls.start_url).group()
+            cls.base_url = re.match(
+                '(http|https)://[\w\-_]+(\.[\w\-_]+)+/',
+                cls.start_url).group()
             logger.info('Base url: {}'.format(cls.base_url))
         try:
             semaphore = asyncio.Semaphore(cls.concurrency)
-            tasks = asyncio.wait([parser.task(cls, semaphore) for parser in cls.parsers])
+            tasks = asyncio.wait([parser.task(cls, semaphore)
+                                  for parser in cls.parsers])
             loop.run_until_complete(cls.init_parse(semaphore))
             loop.run_until_complete(tasks)
         except KeyboardInterrupt:
@@ -74,7 +75,10 @@ class Spider:
             end_time = datetime.now()
             for parser in cls.parsers:
                 if parser.item is not None:
-                    logger.info('Item "{}": {}'.format(parser.item.name, parser.item.count))
+                    logger.info(
+                        'Item "{}": {}'.format(
+                            parser.item.name,
+                            parser.item.count))
             logger.info('Requests count: {}'.format(cls.urls_count))
             logger.info('Error count: {}'.format(len(cls.error_urls)))
             logger.info('Time usage: {}'.format(end_time - start_time))

@@ -9,17 +9,16 @@
                    6/28/18:
 -------------------------------------------------
 """
-
+# Python standard library module
 import asyncio
-
-from .log import logger
-
+# Python third party module
 try:
     import uvloop
-
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 except ImportError:
     pass
+# Application custom module
+from .log import logger
 
 
 async def fetch(url, spider, session, semaphore):
@@ -35,5 +34,5 @@ async def fetch(url, spider, session, semaphore):
                     return data
                 logger.error('Error: {} {}'.format(url, response.status))
                 return None
-        except:
+        except BaseException:
             return None

@@ -10,15 +10,16 @@
 -------------------------------------------------
 """
 
+# Python standard library module
 import asyncio
 from asyncio import Queue
 import re
 from html import unescape
 from urllib.parse import urljoin
-
+# Python third party module
 import aiohttp
 from lxml import etree
-
+# Application custom module
 from .request import fetch
 from .log import logger
 
@@ -72,10 +73,12 @@ class BaseParser(object):
             item = self.parse_item(html)
             await item.save()
             self.item.count_add()
-            logger.info('Parsed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
+            logger.info(
+                'Parsed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
         else:
             spider.parse(html)
-            logger.info('Followed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
+            logger.info(
+                'Followed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
 
     async def task(self, spider, semaphore):
         async with aiohttp.ClientSession(cookie_jar=spider.cookie_jar) as session:
@@ -83,7 +86,9 @@ class BaseParser(object):
                 try:
                     url = await asyncio.wait_for(self.pre_parse_urls.get(), 5)
                     self.parsing_urls.append(url)
-                    asyncio.ensure_future(self.execute_url(url, spider, session, semaphore))
+                    asyncio.ensure_future(
+                        self.execute_url(
+                            url, spider, session, semaphore))
                 except asyncio.TimeoutError:
                     pass
 

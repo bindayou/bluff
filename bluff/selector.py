@@ -9,9 +9,9 @@
                    6/28/18:
 -------------------------------------------------
 """
-
+# Python standard library module
 import re
-
+# Python third party module
 from lxml import etree
 from pyquery import PyQuery as pq
 
@@ -51,8 +51,14 @@ class Xpath(Selector):
                     return [entry.text for entry in d.xpath(self.rule)]
                 else:
                     return d.xpath(self.rule)[0].text
-            return [entry.get(self.attr, None) for entry in d.xpath(self.rule)] if len(d.xpath(self.rule)) > 1 else \
-                d.xpath(self.rule)[0].text
+            return [
+                entry.get(
+                    self.attr,
+                    None) for entry in d.xpath(
+                    self.rule)] if len(
+                d.xpath(
+                    self.rule)) > 1 else d.xpath(
+                        self.rule)[0].text
         except IndexError:
             return None
 
