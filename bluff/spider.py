@@ -38,7 +38,7 @@ class Spider:
     cookie_jar = None
 
     @classmethod
-    def is_running(cls):
+    def _is_running(cls):
         is_running = False
         for parser in cls.parsers:
             if not parser.pre_parse_urls.empty() or len(parser.parsing_urls) > 0:
@@ -46,47 +46,45 @@ class Spider:
         return is_running
 
     @classmethod
-    def parse(cls, html):
+    def _parse(cls, html):
         for parser in cls.parsers:
-            parser.parse_urls(html, cls.base_url)
+            parser._parse_urls(html, cls.base_url)
 
     @classmethod
     def run(cls):
         logger.info('Spider started!')
         start_time = datetime.now()
-        loop = asyncio.get_event_loop()
+        _loop = asyncio.get_event_loop()
 
         if cls.base_url is None:
             cls.base_url = re.match(
                 '(http|https)://[\w\-_]+(\.[\w\-_]+)+/',
                 cls.start_url).group()
-            logger.info('Base url: {}'.format(cls.base_url))
+            logger.info(f'Base url: {cls.base_url}')
         try:
             semaphore = asyncio.Semaphore(cls.concurrency)
             tasks = asyncio.wait([parser.task(cls, semaphore)
                                   for parser in cls.parsers])
-            loop.run_until_complete(cls.init_parse(semaphore))
-            loop.run_until_complete(tasks)
+            _loop.run_until_complete(cls._init_parse(semaphore))
+            _loop.run_until_complete(tasks)
         except KeyboardInterrupt:
             for task in asyncio.Task.all_tasks():
                 task.cancel()
-            loop.run_forever()
+            _loop.run_forever()
         finally:
             end_time = datetime.now()
             for parser in cls.parsers:
                 if parser.item is not None:
                     logger.info(
-                        'Item "{}": {}'.format(
-                            parser.item.name,
-                            parser.item.count))
-            logger.info('Requests count: {}'.format(cls.urls_count))
-            logger.info('Error count: {}'.format(len(cls.error_urls)))
-            logger.info('Time usage: {}'.format(end_time - start_time))
+                        f'Item "{parser.item.name}": {parser.item.count}')
+            logger.info(f'Requests count: {cls.urls_count}')
+            logger.info(f'Error count: {cls.error_urls}')
+            logger.info(f'Time usage: {end_time - start_time}')
             logger.info('Spider finished!')
-            loop.close()
+            _loop.close()
 
     @classmethod
-    async def init_parse(cls, semaphore):
+    async def _init_parse(cls, semaphore):
         async with aiohttp.ClientSession(cookie_jar=cls.cookie_jar) as session:
             html = await fetch(cls.start_url, cls, session, semaphore)
-            cls.parse(html)
+            cls._parse(html)

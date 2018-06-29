@@ -10,14 +10,6 @@
 -------------------------------------------------
 """
 # Python standard library module
-import asyncio
-# Python third party module
-try:
-    import uvloop
-    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-except ImportError:
-    pass
-# Application custom module
 from .log import logger
 
 
@@ -30,8 +22,7 @@ async def fetch(url, spider, session, semaphore):
                 headers = spider.headers
             async with session.get(url, headers=headers, proxy=spider.proxy) as response:
                 if response.status in [200, 201]:
-                    data = await response.text()
-                    return data
+                    return await response.text()
                 logger.error('Error: {} {}'.format(url, response.status))
                 return None
         except BaseException:

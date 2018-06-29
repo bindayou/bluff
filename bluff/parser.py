@@ -33,7 +33,7 @@ class BaseParser(object):
         self.filter_urls = set()
         self.done_urls = []
 
-    def parse_urls(self, html, base_url):
+    def _parse_urls(self, html, base_url):
         if html is None:
             return
         for url in self.abstract_urls(html):
@@ -76,13 +76,13 @@ class BaseParser(object):
             logger.info(
                 'Parsed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
         else:
-            spider.parse(html)
+            spider._parse(html)
             logger.info(
                 'Followed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
 
     async def task(self, spider, semaphore):
         async with aiohttp.ClientSession(cookie_jar=spider.cookie_jar) as session:
-            while spider.is_running():
+            while spider._is_running():
                 try:
                     url = await asyncio.wait_for(self.pre_parse_urls.get(), 5)
                     self.parsing_urls.append(url)

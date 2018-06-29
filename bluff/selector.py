@@ -33,31 +33,31 @@ class Selector:
 
 class Css(Selector):
     def parse_detail(self, html):
-        d = pq(html)
+        dom = pq(html)
         if self.attr is None:
             try:
-                return d(self.rule)[0].text
+                return dom(self.rule)[0].text
             except IndexError:
                 return None
-        return d(self.rule)[0].attr(self.attr, None)
+        return dom(self.rule)[0].attr(self.attr, None)
 
 
 class Xpath(Selector):
     def parse_detail(self, html):
-        d = etree.HTML(html)
+        dom = etree.HTML(html)
         try:
             if self.attr is None:
-                if len(d.xpath(self.rule)) > 1:
-                    return [entry.text for entry in d.xpath(self.rule)]
+                if len(dom.xpath(self.rule)) > 1:
+                    return [entry.text for entry in dom.xpath(self.rule)]
                 else:
-                    return d.xpath(self.rule)[0].text
+                    return dom.xpath(self.rule)[0].text
             return [
                 entry.get(
                     self.attr,
-                    None) for entry in d.xpath(
+                    None) for entry in dom.xpath(
                     self.rule)] if len(
-                d.xpath(
-                    self.rule)) > 1 else d.xpath(
+                dom.xpath(
+                    self.rule)) > 1 else dom.xpath(
                         self.rule)[0].text
         except IndexError:
             return None
