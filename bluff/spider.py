@@ -52,7 +52,7 @@ class Spider:
 
     @classmethod
     def run(cls):
-        logger.info('Spider started!')
+        logger.info('Spider starting!')
         start_time = datetime.now()
         _loop = asyncio.get_event_loop()
 
