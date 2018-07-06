@@ -35,7 +35,7 @@ Based on the latest python3.6, the smallest and flexible Python asynchronous cra
 Not available
 
 ### v0.1todo
--  Code structure 
+-  Code structure (is begining!!!)
     -  Introduction of ABC classes and external exposure interface restrictions 
 -  Execution speed 
     -  Quoting profile, optimizing speed 
