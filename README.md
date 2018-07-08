@@ -37,7 +37,7 @@ Not available
 ### v0.1todo
 -  Code structure (is begining!!!)
     -  Introduction of ABC classes and external exposure interface restrictions 
--  Execution speed 
+-  Execution speed (is begining!!!)
     -  Quoting profile, optimizing speed 
     -  Optimal scheduling 
 -   Added function 
