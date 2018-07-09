@@ -21,10 +21,9 @@ import aiohttp
 from lxml import etree
 # Application custom module
 from .request import fetch
-from .log import logger
+from .mixins import LoggerMixin
 
-
-class BaseParser(object):
+class BaseParser(LoggerMixin):
     def __init__(self, rule, item=None):
         self.rule = rule
         self.item = item
@@ -73,11 +72,11 @@ class BaseParser(object):
             item = self.parse_item(html)
             await item.save()
             self.item.count_add()
-            logger.info(
+            self.info(
                 f'Parsed({len(self.done_urls)}/{len(self.filter_urls)}): {url}')
         else:
             spider._parse(html)
-            logger.info(
+            self.info(
                 'Followed({len(self.done_urls)}/{len(self.filter_urls)}): {url}')
 
     async def task(self, spider, semaphore):

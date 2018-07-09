@@ -15,7 +15,7 @@ import re
 from lxml import etree
 from pyquery import PyQuery as pq
 # Application custom module
-from .abstract import Selector
+from .abstracts import Selector
 
 
 class Css(Selector):

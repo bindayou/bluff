@@ -14,6 +14,7 @@
 from html import unescape
 # Application custom module
 from .log import logger
+from .mixins import LoggerMixin
 from .selector import Selector
 
 
@@ -39,13 +40,13 @@ class ItemType(type):
         return self._item_count
 
 
-class Item(metaclass=ItemType):
+class Item(LoggerMixin,metaclass=ItemType):
     def __init__(self, html):
         self.results = {}
         for name, selector in self.selectors.items():
             value = selector.parse_detail(unescape(html))
             if value is None:
-                logger.error(
+                self.error(
                     f'Selector "{selector.rule}" for {name} was wrong, please check again')
             else:
                 self.results[name] = value

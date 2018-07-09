@@ -22,10 +22,10 @@ except ImportError:
     pass
 # Application custom module
 from .request import fetch
-from .log import logger
+from .mixins import LoggerMixin
 
 
-class Spider:
+class Spider(LoggerMixin):
     start_url = ''
     base_url = None
     parsers = []
@@ -52,7 +52,7 @@ class Spider:
 
     @classmethod
     def run(cls):
-        logger.info('Spider starting!')
+        cls.info('Spider starting!')
         start_time = datetime.now()
         _loop = asyncio.get_event_loop()
 
@@ -60,7 +60,7 @@ class Spider:
             cls.base_url = re.match(
                 '(http|https)://[\w\-_]+(\.[\w\-_]+)+/',
                 cls.start_url).group()
-            logger.info(f'Base url: {cls.base_url}')
+            cls.info(f'Base url: {cls.base_url}')
         try:
             semaphore = asyncio.Semaphore(cls.concurrency)
             tasks = asyncio.wait([parser.task(cls, semaphore)
@@ -75,12 +75,12 @@ class Spider:
             end_time = datetime.now()
             for parser in cls.parsers:
                 if parser.item is not None:
-                    logger.info(
+                    cls.info(
                         f'Item "{parser.item.name}": {parser.item.count}')
-            logger.info(f'Requests count: {cls.urls_count}')
-            logger.info(f'Error count: {cls.error_urls}')
-            logger.info(f'Time usage: {end_time - start_time}')
-            logger.info('Spider finished!')
+            cls.info(f'Requests count: {cls.urls_count}')
+            cls.info(f'Error count: {cls.error_urls}')
+            cls.info(f'Time usage: {end_time - start_time}')
+            cls.info('Spider finished!')
             _loop.close()
 
     @classmethod
