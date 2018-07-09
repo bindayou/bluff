@@ -15,7 +15,7 @@ import re
 from lxml import etree
 from pyquery import PyQuery as pq
 # Application custom module
-from .abstracts import Selector
+from bluff.abstracts import Selector
 
 
 class Css(Selector):
@@ -24,7 +24,7 @@ class Css(Selector):
         if self.attr is None:
             try:
                 return dom(self.rule)[0].text
-            except IndexError:
+            except IndexError as e:
                 return None
         return dom(self.rule)[0].attr(self.attr, None)
 
@@ -46,7 +46,7 @@ class Xpath(Selector):
                 dom.xpath(
                     self.rule)) > 1 else dom.xpath(
                         self.rule)[0].text
-        except IndexError:
+        except IndexError as e:
             return None
 
 
@@ -54,5 +54,5 @@ class Regex(Selector):
     def parse_detail(self, html):
         try:
             return re.findall(self.rule, html)[0]
-        except IndexError:
+        except IndexError as e:
             return None

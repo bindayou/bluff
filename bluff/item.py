@@ -13,9 +13,8 @@
 # Python standard library module
 from html import unescape
 # Application custom module
-from .log import logger
-from .mixins import LoggerMixin
-from .selector import Selector
+from bluff.mixins import LoggerMixin
+from bluff.selector import Selector
 
 
 class ItemType(type):

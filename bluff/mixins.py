@@ -11,7 +11,7 @@
 """
 
 # Application custom module
-from .log import logger
+from bluff.log import logger
 
 
 class LoggerMixin:

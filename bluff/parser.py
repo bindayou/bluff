@@ -20,8 +20,9 @@ from urllib.parse import urljoin
 import aiohttp
 from lxml import etree
 # Application custom module
-from .request import fetch
-from .mixins import LoggerMixin
+from bluff.request import fetch
+from bluff.mixins import LoggerMixin
+
 
 class BaseParser(LoggerMixin):
     def __init__(self, rule, item=None):
@@ -77,7 +78,7 @@ class BaseParser(LoggerMixin):
         else:
             spider._parse(html)
             self.info(
-                'Followed({len(self.done_urls)}/{len(self.filter_urls)}): {url}')
+                f'Followed({len(self.done_urls)}/{len(self.filter_urls)}): {url}')
 
     async def task(self, spider, semaphore):
         async with aiohttp.ClientSession(cookie_jar=spider.cookie_jar) as session:

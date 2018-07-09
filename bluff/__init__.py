@@ -11,10 +11,10 @@
 """
 
 #  Application custom module
-from .item import Item
-from .log import logger
-from .parser import Parser, XPathParser
-from .selector import Css, Regex, Xpath
-from .spider import Spider
+from bluff.item import Item
+from bluff.log import logger
+from bluff.parser import Parser, XPathParser
+from bluff.selector import Css, Regex, Xpath
+from bluff.spider import Spider
 
 __all__ = ('Css', 'Xpath', 'Item', 'Spider', 'Parser', 'XPathParser', 'Regex', 'logger')

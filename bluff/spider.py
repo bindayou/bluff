@@ -18,11 +18,11 @@ import aiohttp
 try:
     import uvloop
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-except ImportError:
+except ImportError as e:
     pass
 # Application custom module
-from .request import fetch
-from .mixins import LoggerMixin
+from bluff.request import fetch
+from bluff.mixins import LoggerMixin
 
 
 class Spider(LoggerMixin):
