@@ -32,7 +32,7 @@ class Spider(LoggerMixin):
     error_urls = []
     urls_count = 0
     concurrency = 5
-    interval = None  # Todo: Limit the interval between two requests
+    interval = None
     headers = {}
     proxy = None
     cookie_jar = None
@@ -67,7 +67,7 @@ class Spider(LoggerMixin):
                                   for parser in cls.parsers])
             _loop.run_until_complete(cls._init_parse(semaphore))
             _loop.run_until_complete(tasks)
-        except KeyboardInterrupt:
+        except KeyboardInterrupt as e:
             for task in asyncio.Task.all_tasks():
                 task.cancel()
             _loop.run_forever()
