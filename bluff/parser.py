@@ -46,7 +46,7 @@ class BaseParser(object):
         raise NotImplementedError
 
     def add(self, urls):
-        url = '{}'.format(urls)
+        url = f'{urls}'
         if url not in self.filter_urls:
             self.filter_urls.add(url)
             self.pre_parse_urls.put_nowait(url)
@@ -74,11 +74,11 @@ class BaseParser(object):
             await item.save()
             self.item.count_add()
             logger.info(
-                'Parsed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
+                f'Parsed({len(self.done_urls)}/{len(self.filter_urls)}): {url}')
         else:
             spider._parse(html)
             logger.info(
-                'Followed({}/{}): {}'.format(len(self.done_urls), len(self.filter_urls), url))
+                'Followed({len(self.done_urls)}/{len(self.filter_urls)}): {url}')
 
     async def task(self, spider, semaphore):
         async with aiohttp.ClientSession(cookie_jar=spider.cookie_jar) as session:
@@ -89,7 +89,7 @@ class BaseParser(object):
                     asyncio.ensure_future(
                         self.execute_url(
                             url, spider, session, semaphore))
-                except asyncio.TimeoutError:
+                except asyncio.TimeoutError as e:
                     pass
 
 

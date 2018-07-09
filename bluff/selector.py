@@ -14,21 +14,8 @@ import re
 # Python third party module
 from lxml import etree
 from pyquery import PyQuery as pq
-
-
-class Selector:
-    def __init__(self, rule, attr=None):
-        self.rule = rule
-        self.attr = attr
-
-    def __str__(self):
-        return '{}({})'.format(self.__class__.__name__, self.rule)
-
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.rule)
-
-    def parse_detail(self, html):
-        raise NotImplementedError
+# Application custom module
+from .abstract import Selector
 
 
 class Css(Selector):
