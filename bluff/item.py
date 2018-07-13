@@ -13,7 +13,7 @@
 # Python standard library module
 from html import unescape
 # Application custom module
-from bluff.mixins import LoggerMixin
+from bluff.log import LogMixin
 from bluff.selector import Selector
 
 
@@ -28,6 +28,7 @@ class ItemType(type):
         namespace['selectors'] = selectors
         for name in selectors:
             del namespace[name]
+        bases = (LogMixin,)
         return type.__new__(mcs, name, bases, namespace)
 
     @property
@@ -39,7 +40,7 @@ class ItemType(type):
         return self._item_count
 
 
-class Item(LoggerMixin,metaclass=ItemType):
+class Item(metaclass=ItemType):
     def __init__(self, html):
         self.results = {}
         for name, selector in self.selectors.items():
