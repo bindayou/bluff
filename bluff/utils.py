@@ -34,3 +34,8 @@ def timeit(obj):
             obj.info(f"Crawler-CountTime:{str(end_time-start_time)[:5]}s")
         return _wrapper
     return wrapper
+
+
+def normal_headers():
+    headers = {}
+    return headers

@@ -28,7 +28,10 @@ class ItemType(type):
         namespace['selectors'] = selectors
         for name in selectors:
             del namespace[name]
-        bases = (LogMixin,)
+        if bases:
+            new_objects = list(bases)
+            new_objects.append(LogMixin)
+            bases = tuple(new_objects)
         return type.__new__(mcs, name, bases, namespace)
 
     @property

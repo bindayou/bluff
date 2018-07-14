@@ -11,9 +11,9 @@
 """
 
 #  Application custom module
-# from bluff.item import Item
-# from bluff.parser import Parser, XPathParser
-# from bluff.selector import Css, Regex, Xpath
-# from bluff.spider import Spider
+from bluff.item import Item
+from bluff.parser import Parser, XPathParser
+from bluff.selector import Css, Regex, Xpath
+from bluff.spider import Spider
 
-# __all__ = ('Css', 'Xpath', 'Item', 'Spider', 'Parser', 'XPathParser', 'Regex', 'logger')
+__all__ = ('Css', 'Xpath', 'Item', 'Spider', 'Parser', 'XPathParser', 'Regex', 'logger')
