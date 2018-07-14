@@ -11,11 +11,27 @@
 """
 # Python standard library module
 import re
+from abc import ABCMeta, abstractmethod
 # Python third party module
 from lxml import etree
 from pyquery import PyQuery as pq
 # Application custom module
-from bluff.abstracts import Selector
+
+
+class Selector(metaclass=ABCMeta):
+    def __init__(self, rule, attr=None):
+        self.rule = rule
+        self.attr = attr
+
+    def __str__(self):
+        return f'{self.__class__.__name__}({self.rule})'
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}({self.rule})'
+
+    @abstractmethod
+    def parse_detail(self, html):
+        raise NotImplementedError
 
 
 class Css(Selector):

@@ -54,6 +54,33 @@ then, you can catch the log on /bluff/log
 
 it`s looking beautiful!!!
 
+or you can write a python script like this
+
+```angular2html
+import sys
+sys.path.append("/home/linhanqiu/Proj/bluff/")
+from bluff import Css, Item, Parser, Spider
+
+
+class Post(Item):
+    title = Css('.ph')
+
+    async def save(self):
+        print(self.title)
+
+
+class MySpider(Spider):
+    start_url = 'http://blog.sciencenet.cn/home.php?mod=space&uid=40109&do=blog&view=me&from=space'
+    parsers = [
+        Parser('http://blog.sciencenet.cn/home.php\?mod=space&uid=\d+&do=blog&view=me&from=space&amp;page=\d+'),
+        Parser(
+            'blog\-\d+\-\d+\.html',
+            Post)]
+
+
+MySpider.run()
+```
+
 # Contribution
 - Pull request.
 - Open issue.
