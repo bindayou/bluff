@@ -25,7 +25,7 @@ id_simple_format = '[%(levelname)s][%(asctime)s] %(message)s'
 
 # 定义日志输出格式 结束
 
-logfile_dir = Path(__file__).parent  # log文件的目录
+logfile_dir = Path(__file__).parent.parent / "log"  # log文件的目录
 logfile_name = 'bluff.log'  # log文件名
 
 # 如果不存在定义的日志目录就创建一个
@@ -80,4 +80,13 @@ LOGGING_DIC = {
 
 logging.config.dictConfig(LOGGING_DIC)  # 导入上面定义的logging配置
 logger = logging.getLogger('running')    # 生成一个log实例
-logger.info(msg="Start logging !!!")
+
+
+class LogMixin:
+    @classmethod
+    def info(cls, msg):
+        logger.info(msg)
+
+    @classmethod
+    def error(cls, msg):
+        logger.error(msg)

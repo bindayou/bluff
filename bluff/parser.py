@@ -21,10 +21,10 @@ import aiohttp
 from lxml import etree
 # Application custom module
 from bluff.request import fetch
-from bluff.mixins import LoggerMixin
+from bluff.log import LogMixin
 
 
-class BaseParser(LoggerMixin):
+class BaseParser(LogMixin):
     def __init__(self, rule, item=None):
         self.rule = rule
         self.item = item

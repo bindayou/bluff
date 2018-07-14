@@ -12,20 +12,14 @@
 # Python standard library module
 import asyncio
 import re
-from datetime import datetime
 # Python third party module
 import aiohttp
-try:
-    import uvloop
-    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-except ImportError as e:
-    pass
 # Application custom module
 from bluff.request import fetch
-from bluff.mixins import LoggerMixin
+from bluff.core import CrawlerCore
 
 
-class Spider(LoggerMixin):
+class Spider(CrawlerCore):
     start_url = ''
     base_url = None
     parsers = []
@@ -51,11 +45,7 @@ class Spider(LoggerMixin):
             parser._parse_urls(html, cls.base_url)
 
     @classmethod
-    def run(cls):
-        cls.info('Spider starting!')
-        start_time = datetime.now()
-        _loop = asyncio.get_event_loop()
-
+    def flow(cls):
         if cls.base_url is None:
             cls.base_url = re.match(
                 '(http|https)://[\w\-_]+(\.[\w\-_]+)+/',
@@ -65,26 +55,24 @@ class Spider(LoggerMixin):
             semaphore = asyncio.Semaphore(cls.concurrency)
             tasks = asyncio.wait([parser.task(cls, semaphore)
                                   for parser in cls.parsers])
-            _loop.run_until_complete(cls._init_parse(semaphore))
-            _loop.run_until_complete(tasks)
+            cls._loop.run_until_complete(cls._init_parse(semaphore))
+            cls._loop.run_until_complete(tasks)
         except KeyboardInterrupt as e:
             for task in asyncio.Task.all_tasks():
                 task.cancel()
-            _loop.run_forever()
+            cls._loop.run_forever()
         finally:
-            end_time = datetime.now()
             for parser in cls.parsers:
                 if parser.item is not None:
                     cls.info(
                         f'Item "{parser.item.name}": {parser.item.count}')
             cls.info(f'Requests count: {cls.urls_count}')
             cls.info(f'Error count: {cls.error_urls}')
-            cls.info(f'Time usage: {end_time - start_time}')
-            cls.info('Spider finished!')
-            _loop.close()
+            cls._loop.close()
 
     @classmethod
     async def _init_parse(cls, semaphore):
         async with aiohttp.ClientSession(cookie_jar=cls.cookie_jar) as session:
             html = await fetch(cls.start_url, cls, session, semaphore)
             cls._parse(html)
+Spider.run()

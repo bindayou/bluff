@@ -46,6 +46,14 @@ Not available
 
 The examples are in the /example/ directory, Including common tests and pytest tests 
 
+`cd bluff/example | pipenv run python test_spider.py` 
+
+then, you can catch the log on /bluff/log
+
+`cat bluff.log`
+
+it`s looking beautiful!!!
+
 # Contribution
 - Pull request.
 - Open issue.
