@@ -1,6 +1,6 @@
 # Bluff
 
-Based on the latest python3.6, the smallest and flexible Python asynchronous crawler library.
+Based on the latest python3.6, the smallest and flexible Python lastest asynchronous crawler library.
 
 ![bluff_process](https://github.com/BlingBlingdevelopers/bluff/blob/master/static/bluff_process.png)
 
